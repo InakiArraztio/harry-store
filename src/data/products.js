@@ -1,3 +1,11 @@
+import varita_sauco from "../images/varita.jpg";
+import pocion from "../images/pocion.jpg";
+import nimbus2000 from "../images/nimbus2000.jpg";
+import libro from "../images/libro.jpg";
+import capa_invisibiliad from "../images/capa_invisibilidad.jpg";
+import orbe from "../images/orbe.jpg";
+import lechuza from "../images/lechuza.jpg";
+
 export const products = [
   {
     id: "1",
@@ -6,7 +14,7 @@ export const products = [
     price: 15000,
     stock: 3,
     category: "varitas",
-    imageURL: "https://placehold.co/300x300?text=Varita+de+Sauco"
+    imageURL: varita_sauco
   },
   {
     id: "2",
@@ -15,7 +23,7 @@ export const products = [
     price: 8000,
     stock: 10,
     category: "pociones",
-    imageURL: "https://placehold.co/300x300?text=Multijugos"
+    imageURL: pocion
   },
   {
     id: "3",
@@ -24,7 +32,7 @@ export const products = [
     price: 45000,
     stock: 5,
     category: "escobas",
-    imageURL: "https://placehold.co/300x300?text=Nimbus+2000"
+    imageURL: nimbus2000
   },
   {
     id: "4",
@@ -33,7 +41,7 @@ export const products = [
     price: 60000,
     stock: 1,
     category: "accesorios",
-    imageURL: "https://placehold.co/300x300?text=Capa"
+    imageURL: capa_invisibiliad
   },
   {
     id: "5",
@@ -42,6 +50,25 @@ export const products = [
     price: 3500,
     stock: 20,
     category: "libros",
-    imageURL: "https://placehold.co/300x300?text=Libro+Hechizos"
+    imageURL: libro
+  },
+    {
+    id: "6",
+    name: "Orbe Mágico",
+    description: "Esfera mágica utilizada para la adivinación y la canalización de energía.",
+    price: 3500,
+    stock: 20,
+    category: "accesorios",
+    imageURL: orbe
+  },
+    {
+    id: "7",
+    name: "Animal",
+    description: "Fiel compañera y mensajera de los magos, capaz de encontrar a su destinatario sin importar la distancia.",
+    price: 3500,
+    stock: 0,
+    category: "animal",
+    imageURL: lechuza
   }
+
 ];

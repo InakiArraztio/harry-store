@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import "./CartWidget.css";
 
 const CartWidget = () => {
-  // Por ahora hardcodeado, después vendrá del CartContext
-  const totalQuantity = 0;
+  const { getTotalQuantity } = useCart();
 
   return (
-    <Link to="/cart" className="text-white text-decoration-none d-flex align-items-center">
-      🛒
-      <span className="ms-1">{totalQuantity}</span>
+    <Link to="/cart" className="cart-widget">
+      🛒<span className="cart-widget__count">{getTotalQuantity()}</span>
     </Link>
   );
 };

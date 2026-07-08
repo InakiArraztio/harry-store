@@ -1,0 +1,33 @@
+:root {
+  --color-parchment: #F1E7D0;
+  --color-parchment-dark: #E3D5B8;
+  --color-ink: #21170F;
+  --color-emerald: #1F4D3D;
+  --color-emerald-dark: #163A2D;
+  --color-burgundy: #6B1E2B;
+  --color-gold: #B8922F;
+
+  --font-display: "Cinzel", serif;
+  --font-body: "Crimson Text", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+}
