@@ -4,10 +4,16 @@ import "./CartWidget.css";
 
 const CartWidget = () => {
   const { getTotalQuantity } = useCart();
+  const quantity = getTotalQuantity();
 
   return (
     <Link to="/cart" className="cart-widget">
-      🛒<span className="cart-widget__count">{getTotalQuantity()}</span>
+      🛒
+      {quantity > 0 && (
+        <span className="cart-widget__count">
+          {quantity}
+        </span>
+      )}
     </Link>
   );
 };

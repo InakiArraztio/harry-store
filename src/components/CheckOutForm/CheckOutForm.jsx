@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { createOrder } from "../../services/firebase/orders";
+import { createOrder } from "../../services/orders";
 import "./CheckoutForm.css";
 
 const CheckoutForm = () => {
@@ -17,7 +17,7 @@ const CheckoutForm = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
+  
   const validate = () => {
     const newErrors = {};
 
@@ -49,22 +49,26 @@ const CheckoutForm = () => {
     setLoading(true);
 
     const order = {
-      buyer: form,
-      items: cartItems.map((item) => ({
+    buyer: form,
+    items: cartItems.map((item) => ({
         id: item.id,
         name: item.name,
         price: item.price,
-        quantity: item.quantity
-      })),
-      total: getTotalPrice(),
-      date: new Date().toISOString()
+        quantity: item.quantity,
+    })),
+    total: getTotalPrice(),
     };
 
-    const id = await createOrder(order);
-
-    setOrderId(id);
-    setLoading(false);
-    clearCart();
+    try {
+        const id = await createOrder(order);
+        setOrderId(id);
+        clearCart();
+    } catch (error) {
+        console.error(error);
+        alert("Error al generar la orden.");
+    } finally {
+        setLoading(false);
+    }
   };
 
   if (cartItems.length === 0 && !orderId) {
@@ -80,7 +84,7 @@ const CheckoutForm = () => {
     return (
       <div className="checkout-success">
         <h2>¡Compra confirmada! 🦉</h2>
-        <p>Tu orden fue generada con éxito.</p>
+        <p>Gracias por comprar en Hogwarts Shop.</p>
         <p className="checkout-success__id">ID de tu orden: <strong>{orderId}</strong></p>
         <button className="checkout-success__btn" onClick={() => navigate("/")}>
           Volver al catálogo

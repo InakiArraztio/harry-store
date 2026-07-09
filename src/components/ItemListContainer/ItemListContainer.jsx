@@ -1,39 +1,53 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { products } from "../../data/products";
-import ItemList from "../ItemList/ItemList";
-import Loader from "../Loader/Loader";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import ItemCount from "../ItemCount/ItemCount";
+import { useCart } from "../../context/CartContext";
+import "./ItemDetail.css";
 
-const ItemListContainer = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { categoryId } = useParams();
+const ItemDetail = ({ product }) => {
+  const { name, description, price, stock, imageURL } = product;
+  const [addedQuantity, setAddedQuantity] = useState(0);
+  const { addToCart } = useCart();
 
-  useEffect(() => {
-    let ignore = false; // flag para evitar setState si el efecto ya no es válido
+  const handleAdd = (quantity) => {
+    addToCart(product, quantity);
+    setAddedQuantity(quantity);
+  };
 
-    setLoading(true);
+  return (
+    <div className="container item-detail my-4">
+      <div className="row">
+        <div className="col-md-5">
+          <div className="item-detail__image-wrapper">
+            <img src={imageURL} alt={name} className="item-detail__image" />
+          </div>
+        </div>
 
-    const timer = setTimeout(() => {
-      if (ignore) return; // si cambió categoryId antes de que termine, no hacemos nada
+        <div className="col-md-7">
+          <h2>{name}</h2>
+          <p>{description}</p>
+          <h4>${price}</h4>
 
-      const filtered = categoryId
-        ? products.filter((p) => p.category === categoryId)
-        : products;
+          {stock === 0 && (
+            <p className="text-danger fw-bold">Sin stock disponible</p>
+          )}
 
-      setItems(filtered);
-      setLoading(false);
-    }, 500);
+          {stock > 0 && addedQuantity === 0 && (
+            <ItemCount stock={stock} initial={1} onAdd={handleAdd} />
+          )}
 
-    return () => {
-      ignore = true;
-      clearTimeout(timer);
-    };
-  }, [categoryId]);
-
-  if (loading) return <Loader />;
-
-  return <ItemList products={items} />;
+          {addedQuantity > 0 && (
+            <div className="alert alert-success">
+              Agregaste {addedQuantity} unidad(es) al carrito. 
+              <Link to="/cart" className="ms-2">Ver carrito</Link>
+              {" · "}
+              <Link to="/">Seguir comprando</Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default ItemListContainer;
+export default ItemDetail;

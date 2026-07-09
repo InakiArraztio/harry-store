@@ -1,35 +1,44 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../../data/products";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../services/config";
 import ItemDetail from "../ItemDetail/ItemDetail";
 import Loader from "../Loader/Loader";
 
 const ItemDetailContainer = () => {
+  const { itemId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { itemId } = useParams();
 
   useEffect(() => {
-    let ignore = false;
+    const getProduct = async () => {
+      setLoading(true);
 
-    setLoading(true);
+      try {
+        const productRef = doc(db, "products", itemId);
+        const snapshot = await getDoc(productRef);
 
-    const timer = setTimeout(() => {
-      if (ignore) return;
-
-      const found = products.find((p) => p.id === itemId);
-      setProduct(found ?? null);
-      setLoading(false);
-    }, 500);
-
-    return () => {
-      ignore = true;
-      clearTimeout(timer);
+        if (snapshot.exists()) {
+          setProduct({
+            id: snapshot.id,
+            ...snapshot.data(),
+          });
+        } else {
+          setProduct(null);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
-  }, [itemId]);
 
+    getProduct();
+  }, [itemId]);
   if (loading) return <Loader />;
-  if (!product) return <p>Producto no encontrado.</p>;
+  if (!product) {
+    return <h2>Producto no encontrado.</h2>;
+  }
   return <ItemDetail product={product} />;
 };
 

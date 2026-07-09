@@ -27,15 +27,11 @@ const Cart = () => {
       </div>
 
       <div className="cart__summary">
-        <button className="cart__clear-btn" onClick={clearCart}>
-          Vaciar carrito
-        </button>
+        <button className="cart__clear-btn" onClick={clearCart}>Vaciar carrito</button>
 
         <h3 className="cart__total">Total: ${getTotalPrice()}</h3>
 
-        <Link to="/checkout" className="cart__checkout-btn">
-          Finalizar compra
-        </Link>
+        <Link to="/checkout" className="cart__checkout-btn">Finalizar compra</Link>
       </div>
     </div>
   );
