@@ -1,53 +1,66 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import ItemCount from "../ItemCount/ItemCount";
-import { useCart } from "../../context/CartContext";
-import "./ItemDetail.css";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../services/config";
+import ItemList from "../ItemList/ItemList";
+import Loader from "../Loader/Loader";
+import CategoryBanner from "../CategoryBanner/CategoryBanner";
 
-const ItemDetail = ({ product }) => {
-  const { name, description, price, stock, imageURL } = product;
-  const [addedQuantity, setAddedQuantity] = useState(0);
-  const { addToCart } = useCart();
+const ItemListContainer = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { categoryId } = useParams();
 
-  const handleAdd = (quantity) => {
-    addToCart(product, quantity);
-    setAddedQuantity(quantity);
-  };
+  useEffect(() => {
+    if (!categoryId) return;
 
-  return (
-    <div className="container item-detail my-4">
-      <div className="row">
-        <div className="col-md-5">
-          <div className="item-detail__image-wrapper">
-            <img src={imageURL} alt={name} className="item-detail__image" />
-          </div>
+    const getProducts = async () => {
+      setLoading(true);
+
+      try {
+        const productsRef = collection(db, "products");
+        const productsQuery = query(productsRef, where("category", "==", categoryId));
+
+        const snapshot = await getDocs(productsQuery);
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setItems(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getProducts();
+  }, [categoryId]);
+
+  if (!categoryId) {
+    return (
+      <>
+        <div className="hero-banner">
+          <h1>Bienvenido al Callejón Diagon</h1>
+          <p>Todo lo que un mago necesita, a un hechizo de distancia.</p>
         </div>
+        <CategoryBanner />
+      </>
+    );
+  }
 
-        <div className="col-md-7">
-          <h2>{name}</h2>
-          <p>{description}</p>
-          <h4>${price}</h4>
+  if (loading) return <Loader />;
 
-          {stock === 0 && (
-            <p className="text-danger fw-bold">Sin stock disponible</p>
-          )}
+  if (items.length === 0) {
+    return (
+      <p className="empty-category">
+        No encontramos productos mágicos en esta categoría todavía.
+      </p>
+    );
+  }
 
-          {stock > 0 && addedQuantity === 0 && (
-            <ItemCount stock={stock} initial={1} onAdd={handleAdd} />
-          )}
-
-          {addedQuantity > 0 && (
-            <div className="alert alert-success">
-              Agregaste {addedQuantity} unidad(es) al carrito. 
-              <Link to="/cart" className="ms-2">Ver carrito</Link>
-              {" · "}
-              <Link to="/">Seguir comprando</Link>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  return <ItemList products={items} />;
 };
 
-export default ItemDetail;
+export default ItemListContainer;

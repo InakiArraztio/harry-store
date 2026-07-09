@@ -5,6 +5,7 @@ import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailCont
 import Cart from "./components/Cart/Cart";
 import CheckOutForm from "./components/CheckOutForm/CheckOutForm";
 import NotFound from "./components/NotFound/NotFound";
+import Footer from "./components/Footer/Footer";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/checkout" element={<CheckOutForm />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

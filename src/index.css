@@ -31,3 +31,22 @@ h1, h2, h3, h4 {
 a {
   color: inherit;
 }
+
+.hero-banner {
+  text-align: center;
+  padding: 3rem 1rem 1rem;
+  background: linear-gradient(180deg, var(--color-emerald-dark) 0%, transparent 100%);
+  color: var(--color-parchment);
+  margin-bottom: -1rem;
+}
+
+.hero-banner h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-banner p {
+  font-family: var(--font-body);
+  font-style: italic;
+  opacity: 0.9;
+}

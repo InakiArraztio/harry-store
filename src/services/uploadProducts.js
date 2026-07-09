@@ -57,7 +57,8 @@ const products = [
     stock: 0,
     category: "animal",
     imageURL: "/images/lechuza.jpg"
-  }
+  },
+
 ];
 
 export const uploadProducts = async () => {

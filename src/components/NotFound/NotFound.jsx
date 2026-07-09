@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 
-const NotFound = () => {
-  return (
-    <div className="container text-center mt-5">
-      <h1>404</h1>
-      <p>La página que buscás no existe.</p>
-      <Link to="/" className="btn btn-dark">Volver al inicio</Link>
-    </div>
-  );
-};
+   const NotFound = () => (
+     <div style={{ textAlign: "center", padding: "4rem" }}>
+       <h2>404 - Página no encontrada</h2>
+       <p>Parece que este hechizo no existe.</p>
+       <Link to="/">Volver al catálogo</Link>
+     </div>
+   );
 
-export default NotFound;
+   export default NotFound;
